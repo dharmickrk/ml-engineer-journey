@@ -1,6 +1,4 @@
-# Titanic Survival Prediction
-
-First project in my [ML engineer learning journey](../README.md) — a classic classification problem used to get fluent with Pandas and scikit-learn.
+First project — a classic classification problem used to get fluent with Pandas and scikit-learn.
 
 ## Goal
 
@@ -8,16 +6,16 @@ Predict whether a passenger survived the Titanic disaster based on features like
 
 ## Dataset
 
-[Titanic - Machine Learning from Disaster](https://www.kaggle.com/competitions/titanic) (Kaggle), 891 rows, 12 columns.
+https://www.kaggle.com/competitions/titanic
 
-## What I did
+## Tasks
 
-- **Dropped** `PassengerId`, `Name`, `Ticket`, `Cabin` — low signal or too much missing data for a first pass.
-- **Handled missing values** — dropped the 2 rows missing `Embarked`, and filled missing `Age` with the mean.
-- **Engineered a feature** — combined `SibSp` + `Parch` into a single `FamilySize` column.
-- **Encoded categoricals** — one-hot encoded `Sex` and `Embarked` (dropped the redundant `Sex_female` column since it's just the inverse of `Sex_male`).
-- **Split the data** 80/20 with stratification on the target, so the survival rate is consistent across train and test.
-- **Trained two models** — Logistic Regression and Random Forest — and compared them with accuracy, a confusion matrix, and a full classification report (precision/recall/F1), not just accuracy alone.
+- Dropped PassengerId, Name, Ticket, Cabin — low signal or too much missing data for a first pass.
+- Handled missing values— dropped the 2 rows missing Embarked, and filled missing Age with the mean.
+- Engineered a feature — combined SibSp + Parch into a single FamilySize column.
+- Encoded categoricals — one-hot encoded Sex and Embarked (dropped the redundant Sex_female column since it's just the inverse of Sex_male).
+- Split the data 80/20 with stratification on the target, so the survival rate is consistent across train and test.
+- Trained two models — Logistic Regression and Random Forest — and compared them with accuracy, a confusion matrix, and a full classification report (precision/recall/F1), not just accuracy alone.
 
 ## Results
 
@@ -28,24 +26,24 @@ Predict whether a passenger survived the Titanic disaster based on features like
 
 Logistic Regression slightly outperformed Random Forest — not surprising given the dataset is small and the relationships are fairly simple (a random forest's strength — capturing complex feature interactions — has less to work with here).
 
-## What I learned
+## Mistakes Made
 
-The most important lesson wasn't a modeling technique — it was a bug. My first version computed the mean for filling missing `Age` values **before** splitting into train/test:
+The most important lesson wasn't a modeling technique — it was a bug. My first version computed the mean for filling missing Age values before splitting into train/test:
 
 ```python
-df['Age'] = df['Age'].fillna(df['Age'].mean())  # wrong: uses info from the test set
+df['Age'] = df['Age'].fillna(df['Age'].mean())  
 X_train, X_test, y_train, y_test = train_test_split(...)
 ```
 
-This is **data leakage** — the imputation was computed using statistics from data that should have been "unseen." The fix is to split first, then compute the mean from the training set only, and apply that same value to fill the test set:
+This is data leakage — the imputation was computed using statistics from data that should have been unseen. The fix is to split first, then compute the mean from the training set only, and apply that same value to fill the test set:
 
 ```python
 X_train, X_test, y_train, y_test = train_test_split(...)
 X_train['Age'] = X_train['Age'].fillna(X_train['Age'].mean())
-X_test['Age'] = X_test['Age'].fillna(X_train['Age'].mean())  # reuse the training mean
+X_test['Age'] = X_test['Age'].fillna(X_train['Age'].mean()) 
 ```
 
-The effect on accuracy here was small, but the same mistake with feature scaling or other preprocessing can meaningfully inflate reported results without you realizing it. Fixing this is now a standing habit: **split first, then compute anything from data.**
+The effect on accuracy here was small, but the same mistake with feature scaling or other preprocessing can meaningfully inflate reported results.
 
 ## Tools
 
