@@ -7,7 +7,7 @@ A project-based path to becoming an ML engineer — learning by building increas
 | # | Project | Concepts | Status |
 |---|---|---|---|
 | 01 | Titanic Survival Prediction | Pandas, scikit-learn, classification, train/test splits, data leakage | Complete |
-| 02 | House Price Regression | Regression, feature scaling, regularization | In progress |
+| 02 | House Price Regression | Regression, feature scaling, regularization | Complete |
 
 ## Progression
 
