@@ -8,6 +8,7 @@ A project-based path to becoming an ML engineer — learning by building increas
 |---|---|---|---|
 | 01 | Titanic Survival Prediction | Pandas, scikit-learn, classification, train/test splits, data leakage | Complete |
 | 02 | House Price Regression | Regression, feature scaling, regularization | Complete |
+| 03 | MNIST Digit Classifier | Neural networks, backpropagation, gradient descent — implemented in raw NumPy | In Progress |
 
 ## Progression
 
